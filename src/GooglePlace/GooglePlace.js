@@ -91,6 +91,7 @@ export default function GooglePlace() {
 
   return (
     <Autocomplete
+      // clearOnBlur={false}
       fullWidth
       id="google-map-demo"
       // sx={{ width: 300 }}
