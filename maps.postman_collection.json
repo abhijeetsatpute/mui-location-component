@@ -1,0 +1,77 @@
+{
+	"info": {
+		"_postman_id": "c505b689-9582-43c6-a745-84d29c10e54c",
+		"name": "maps",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Reverse GEO code",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://revgeocode.search.hereapi.com/v1/revgeocode?at=19.9778054,79.2813775&lang=en-US&apiKey={{API_KEY}}",
+					"protocol": "https",
+					"host": [
+						"revgeocode",
+						"search",
+						"hereapi",
+						"com"
+					],
+					"path": [
+						"v1",
+						"revgeocode"
+					],
+					"query": [
+						{
+							"key": "at",
+							"value": "19.9778054,79.2813775"
+						},
+						{
+							"key": "lang",
+							"value": "en-US"
+						},
+						{
+							"key": "apiKey",
+							"value": "{{API_KEY}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "AutoComplete",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://autocomplete.search.hereapi.com/v1/autocomplete?q=Sea&apiKey={{API_KEY}}",
+					"protocol": "https",
+					"host": [
+						"autocomplete",
+						"search",
+						"hereapi",
+						"com"
+					],
+					"path": [
+						"v1",
+						"autocomplete"
+					],
+					"query": [
+						{
+							"key": "q",
+							"value": "Sea"
+						},
+						{
+							"key": "apiKey",
+							"value": "{{API_KEY}}"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
