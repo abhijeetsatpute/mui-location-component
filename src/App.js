@@ -1,36 +1,28 @@
 import { useState } from "react";
 
-import PlaceOutlinedIcon from "@mui/icons-material/PlaceOutlined";
 import Grid from "@mui/material/Grid";
-import { Typography } from "@mui/material";
+import { TextField, Typography } from "@mui/material";
 import Container from "@mui/material/Container";
-// import Stack from '@mui/material/Stack';
+import Autocomplete from "@mui/material/Autocomplete";
 import axios from "axios";
 
-import GooglePlace from "./GooglePlace";
-import IconTextField from "./IconTextField";
+import RevGeo from "./RevGeo";
 
 export default function App() {
-  const [place, setPlace] = useState("");
+  const [searchPlace, setSearchPlace] = useState("");
+  const [placesResult, setPlacesResult] = useState([]);
 
-  const handleChange = (event) => {
-    setPlace(event.target.value);
-  };
-
-  const handleClick = (event) => {
-    event.preventDefault();
-    // if ("geolocation" in navigator) {
-    //   console.log("Available");
-    //   navigator.geolocation.getCurrentPosition(function (position) {
-    //     setPlace(`${position.coords.latitude}, ${position.coords.longitude}`);
-    //   });
-    // } else {
-    //   console.log("Not Available");
-    // }
-
+  const handleSearchChange = (event) => {
     const options = {
       method: "GET",
-      url: "https://spott.p.rapidapi.com/places/ip/me",
+      url: "https://spott.p.rapidapi.com/places/autocomplete",
+      params: {
+        limit: "10",
+        skip: "0",
+        country: "US,CA,IN",
+        q: searchPlace,
+        type: "CITY",
+      },
       headers: {
         "X-RapidAPI-Key": "07b94c66camshf16009012abe9b5p1f256bjsna812654ea83f",
         "X-RapidAPI-Host": "spott.p.rapidapi.com",
@@ -40,15 +32,26 @@ export default function App() {
     axios
       .request(options)
       .then(function (response) {
-        setPlace(response.data.name);
+        let labels = [];
+        for (let i = 0; i < response.data.length; i++) {
+          let obj = {
+            label: response.data[i].name,
+            geoCode: response.data[i].geonameId,
+          };
+          labels.push(obj);
+        }
+        setPlacesResult(labels);
+        console.log(placesResult);
       })
       .catch(function (error) {
         console.error(error);
       });
 
-    // 👇️ value of input field
-    console.log("old value: ", place);
+    // 👇 Get input value from "event"
+    setSearchPlace(event.target.value);
+    console.log(searchPlace);
   };
+
   return (
     <Container maxWidth="sm">
       <Grid
@@ -59,22 +62,28 @@ export default function App() {
         rowSpacing={1}
       >
         <Typography>Location</Typography>
-        <GooglePlace></GooglePlace>
+
+        {/* <TextField
+          size="small"
+          name="searchPlace"
+          onInputChange={handleSearchChange}
+        /> */}
+
+        <Autocomplete
+          disablePortal
+          options={placesResult}
+          renderInput={(params) => (
+            <TextField {...params} placeholder="Place" />
+          )}
+          size="small"
+          name="searchPlace"
+          onInputChange={handleSearchChange}
+          clearText=""
+          position="start"
+        />
 
         <Grid item>
-          <IconTextField
-            id="place"
-            value={place}
-            onChange={handleChange}
-            label="Place"
-            iconEnd={
-              <PlaceOutlinedIcon
-                sx={{ color: "orange" }}
-                style={{ cursor: "pointer" }}
-                onClick={handleClick}
-              />
-            }
-          />
+          <RevGeo />
         </Grid>
       </Grid>
     </Container>
