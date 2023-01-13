@@ -3,7 +3,7 @@ import axios from "axios";
 import PlaceOutlinedIcon from "@mui/icons-material/PlaceOutlined";
 import IconTextField from "../IconTextField";
 
-export default function RevGeo({ iconStart, iconEnd, InputProps, ...props }) {
+export default function RevGeo() {
   const [place, setPlace] = useState("");
   const handlePlaceChange = (event) => {
     setPlace(event.target.value);
